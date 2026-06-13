@@ -710,11 +710,26 @@ export default function BuildABox() {
                 <>
                   <h3 className="bb-form-heading">Where should we send your confirmation?</h3>
                   <div className="bb-form">
-                    <input type="text" placeholder="Your name *" value={contact.name} onChange={updateContact('name')} data-cursor />
-                    <input type="email" placeholder="Email *" value={contact.email} onChange={updateContact('email')} data-cursor />
-                    <input type="tel" placeholder="Phone (optional)" value={contact.phone} onChange={updateContact('phone')} data-cursor />
-                    <input type="date" aria-label="Preferred date" value={contact.date} onChange={updateContact('date')} data-cursor />
-                    <textarea rows={2} placeholder={fulfillment === 'delivery' ? 'Delivery address & any notes' : 'Pickup notes (optional)'} value={contact.notes} onChange={updateContact('notes')} data-cursor />
+                    <div className="bb-field">
+                      <label htmlFor="c-name">Your name *</label>
+                      <input id="c-name" type="text" placeholder="Jane Doe" value={contact.name} onChange={updateContact('name')} data-cursor />
+                    </div>
+                    <div className="bb-field">
+                      <label htmlFor="c-email">Email *</label>
+                      <input id="c-email" type="email" placeholder="you@email.com" value={contact.email} onChange={updateContact('email')} data-cursor />
+                    </div>
+                    <div className="bb-field">
+                      <label htmlFor="c-phone">Phone (optional)</label>
+                      <input id="c-phone" type="tel" placeholder="(555) 123-4567" value={contact.phone} onChange={updateContact('phone')} data-cursor />
+                    </div>
+                    <div className="bb-field">
+                      <label htmlFor="c-date">📅 Date needed by</label>
+                      <input id="c-date" type="date" value={contact.date} onChange={updateContact('date')} data-cursor />
+                    </div>
+                    <div className="bb-field bb-field-full">
+                      <label htmlFor="c-notes">{fulfillment === 'delivery' ? 'Delivery address & notes' : 'Notes (optional)'}</label>
+                      <textarea id="c-notes" rows={2} placeholder={fulfillment === 'delivery' ? 'Street, city, ZIP — plus anything else we should know' : 'Anything else we should know?'} value={contact.notes} onChange={updateContact('notes')} data-cursor />
+                    </div>
                   </div>
                   {submitState === 'error' && <p className="bb-form-error">{submitError}</p>}
                   <div className="bb-summary-actions">
