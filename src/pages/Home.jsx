@@ -336,7 +336,7 @@ export default function Home({ ready }) {
               <h3>Pickup or delivery</h3>
               <p>
                 Your box arrives ribbon-wrapped and ready to gift. Choose free
-                local pickup or add delivery right to your door for a flat $6 —
+                local pickup or add delivery right to your door for a flat $10 —
                 either way it's ready to devour straight from the lid.
               </p>
             </div>

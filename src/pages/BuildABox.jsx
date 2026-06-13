@@ -9,7 +9,7 @@ import {
 
 const CONFETTI_COLORS = ['#FF7BAC', '#A78BFA', '#5CC9A7', '#F5B94C', '#FFD3E3', '#7BD8FF']
 
-const DELIVERY_FEE = 6
+const DELIVERY_FEE = 10
 
 const OCCASIONS = [
   'Birthday',
@@ -109,6 +109,7 @@ export default function BuildABox() {
   const [items, setItems] = useState([])
   const [treat, setTreat] = useState('strawberry')
   const [dip, setDip] = useState('milk')
+  const [customDip, setCustomDip] = useState('')
   const [drizzle, setDrizzle] = useState('none')
   const [topping, setTopping] = useState('none')
   const [flying, setFlying] = useState(null)
@@ -186,10 +187,12 @@ export default function BuildABox() {
   const addTreat = (custom) => {
     if (!box || full || flying) return
     const t = findTreat(custom?.treat ?? treat)
+    const resolvedDip = custom?.dip ?? dip
     const item = {
       id: nextId(),
       treat: t.id,
-      dip: custom?.dip ?? dip,
+      dip: resolvedDip,
+      customDip: resolvedDip === 'custom' ? (customDip.trim() || 'Custom dip') : undefined,
       drizzle: custom?.drizzle ?? drizzle,
       topping: custom?.topping ?? topping,
       price: t.price,
@@ -258,13 +261,16 @@ export default function BuildABox() {
 
   const t = findTreat(treat)
 
+  const dipLabelOf = (dipId, customLabel) =>
+    dipId === 'custom' ? (customLabel?.trim() || 'Custom dip') : findDip(dipId).label
+
   const fulfillmentLabel =
     fulfillment === 'delivery' ? `Delivery (+$${DELIVERY_FEE.toFixed(2)})` : 'Pickup (Free)'
 
   const mailtoHref = () => {
     const lines = items.map(
       (it, i) =>
-        `${i + 1}. ${findTreat(it.treat).name} — ${findDip(it.dip).label}, ${findDrizzle(it.drizzle).label}, ${findTopping(it.topping).label} ($${it.price.toFixed(2)})`
+        `${i + 1}. ${findTreat(it.treat).name} — ${dipLabelOf(it.dip, it.customDip)}, ${findDrizzle(it.drizzle).label}, ${findTopping(it.topping).label} ($${it.price.toFixed(2)})`
     )
     const body = encodeURIComponent(
       `Hi Summeray!\n\nI'd love to order ${box ? `"${box.name}"` : 'a box'} (${items.length} treats):\n\n` +
@@ -371,7 +377,25 @@ export default function BuildABox() {
                         <span className="swatch" style={{ background: d.color }} /> {d.label}
                       </button>
                     ))}
+                    <button
+                      className={`bb-chip${dip === 'custom' ? ' active' : ''}`}
+                      onClick={() => setDip('custom')}
+                      data-cursor
+                    >
+                      <span className="swatch multi" /> ✏️ Type your own
+                    </button>
                   </div>
+                  {dip === 'custom' && (
+                    <input
+                      className="bb-custom-dip"
+                      type="text"
+                      maxLength={40}
+                      placeholder="Describe your dip — e.g. caramel, mint green, red velvet"
+                      value={customDip}
+                      onChange={(e) => setCustomDip(e.target.value)}
+                      data-cursor
+                    />
+                  )}
                 </div>
 
                 <div className="bb-option-group">
@@ -418,7 +442,7 @@ export default function BuildABox() {
                   <div className="bb-preview-meta">
                     <div className="name">{t.name}</div>
                     <div className="desc">
-                      {findDip(dip).label} · {findDrizzle(drizzle).label} · {findTopping(topping).label}
+                      {dipLabelOf(dip, customDip)} · {findDrizzle(drizzle).label} · {findTopping(topping).label}
                     </div>
                     <div className="price">${t.price.toFixed(2)}</div>
                   </div>
@@ -559,7 +583,7 @@ export default function BuildABox() {
                     <div className="meta">
                       <b>{findTreat(it.treat).name}</b>
                       <span>
-                        {findDip(it.dip).label} · {findDrizzle(it.drizzle).label} · {findTopping(it.topping).label}
+                        {dipLabelOf(it.dip, it.customDip)} · {findDrizzle(it.drizzle).label} · {findTopping(it.topping).label}
                       </span>
                     </div>
                     <span className="p">${it.price.toFixed(2)}</span>
