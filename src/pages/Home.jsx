@@ -275,7 +275,7 @@ export default function Home({ ready }) {
         <div className="wrap">
           <div className="section-head" data-reveal>
             <span className="section-kicker">The Menu</span>
-            <h2 className="section-title">Four treats. <em>Endless combos.</em></h2>
+            <h2 className="section-title">Six treats. <em>Endless combos.</em></h2>
             <p className="section-sub">
               Every piece is dipped, drizzled and decorated by hand. Pick your
               chocolate, your drizzle, your toppings — we make it happen.
@@ -291,14 +291,7 @@ export default function Home({ ready }) {
                 data-cursor
               >
                 <div className="art">
-                  <TreatSVG
-                    type={t.id}
-                    dip={t.id === 'cakepop' ? 'ruby' : t.id === 'crispy' ? 'dark' : 'milk'}
-                    drizzle={t.id === 'strawberry' ? 'white' : t.id === 'pretzel' ? 'pink' : 'white'}
-                    topping={t.id === 'cakepop' ? 'sprinkles' : 'none'}
-                    width="100%"
-                    height="100%"
-                  />
+                  <TreatSVG type={t.id} {...t.preview} width="100%" height="100%" />
                 </div>
                 <h3>{t.name}</h3>
                 <p>{t.blurb}</p>
