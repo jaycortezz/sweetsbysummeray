@@ -187,6 +187,96 @@ export function PretzelSVG({ dip = 'milk', drizzle = 'white', topping = 'none', 
   )
 }
 
+export function OreoSVG({ dip = 'milk', drizzle = 'white', topping = 'none', ...props }) {
+  const id = useId()
+  const d = findDip(dip)
+  const dz = findDrizzle(drizzle)
+  return (
+    <svg viewBox="0 0 120 120" width="120" height="120" {...props}>
+      <defs>
+        <clipPath id={`${id}-disc`}>
+          <circle cx="60" cy="60" r="44" />
+        </clipPath>
+      </defs>
+      {/* chocolate-coated cookie disc */}
+      <circle cx="60" cy="60" r="44" fill={d.color} stroke={OUTLINE} strokeWidth="2" />
+      <g clipPath={`url(#${id}-disc)`}>
+        {/* subtle inner edge to read as a cookie */}
+        <circle cx="60" cy="60" r="40" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="2" />
+        {/* glossy highlight */}
+        <ellipse cx="46" cy="44" rx="16" ry="9" fill={d.shine} opacity="0.6" transform="rotate(-24 46 44)" />
+        {dz.color && (
+          <g stroke={dz.color} strokeWidth="3.4" fill="none" strokeLinecap="round">
+            <path d="M22 50 L40 60 L26 68 L44 78" />
+            <path d="M50 42 L68 52 L54 62 L72 72" />
+            <path d="M78 50 L92 60 L82 70" />
+          </g>
+        )}
+        <ToppingDots
+          topping={topping}
+          spots={[[44, 48, 3, 20], [60, 42, 3, -30], [76, 50, 3, 60], [50, 62, 3, 10], [68, 64, 3, -50], [60, 78, 3, 40], [38, 66, 2.6, -15], [84, 68, 2.6, 75]]}
+        />
+      </g>
+    </svg>
+  )
+}
+
+export function CupcakeSVG({ dip = 'ruby', drizzle = 'none', topping = 'none', ...props }) {
+  const id = useId()
+  const d = findDip(dip)
+  const dz = findDrizzle(drizzle)
+  const frostCircles = (
+    <>
+      <ellipse cx="60" cy="68" rx="32" ry="15" />
+      <circle cx="44" cy="58" r="14" />
+      <circle cx="76" cy="58" r="14" />
+      <circle cx="60" cy="54" r="17" />
+      <circle cx="51" cy="45" r="12" />
+      <circle cx="69" cy="45" r="12" />
+      <circle cx="60" cy="37" r="12" />
+      <circle cx="60" cy="29" r="9" />
+    </>
+  )
+  return (
+    <svg viewBox="0 0 120 120" width="120" height="120" {...props}>
+      <defs>
+        <clipPath id={`${id}-frost`}>{frostCircles}</clipPath>
+      </defs>
+      {/* wrapper / liner */}
+      <path d="M34 70 L86 70 L80 110 Q80 112 78 112 L42 112 Q40 112 40 110 Z" fill="#FFB3CB" stroke={OUTLINE} strokeWidth="2" />
+      <g stroke="#F48FB1" strokeWidth="2.4" strokeLinecap="round">
+        <path d="M48 74 L46 110" />
+        <path d="M60 74 L60 110" />
+        <path d="M72 74 L74 110" />
+        <path d="M41 74 L39.5 108" />
+        <path d="M79 74 L80.5 108" />
+      </g>
+      {/* soft shadow under the frosting blob */}
+      <g fill={OUTLINE} transform="translate(0 2.5)">{frostCircles}</g>
+      {/* frosting swirl */}
+      <g fill={d.color}>{frostCircles}</g>
+      <g clipPath={`url(#${id}-frost)`}>
+        <ellipse cx="50" cy="42" rx="11" ry="6" fill={d.shine} opacity="0.65" transform="rotate(-22 50 42)" />
+        {dz.color && (
+          <g stroke={dz.color} strokeWidth="3.2" fill="none" strokeLinecap="round">
+            <path d="M40 50 L52 58 L42 66" />
+            <path d="M60 44 L72 52 L62 62" />
+            <path d="M74 56 L84 62" />
+          </g>
+        )}
+        <ToppingDots
+          topping={topping}
+          spots={[[46, 52, 3, 20], [60, 46, 3, -30], [74, 54, 3, 60], [52, 62, 3, 10], [68, 62, 3, -50], [60, 34, 3, 40], [40, 60, 2.6, -15], [80, 62, 2.6, 75]]}
+        />
+      </g>
+      {/* cherry on top */}
+      <path d="M60 26 Q63 18 69 16" stroke="#5CC9A7" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      <circle cx="60" cy="24" r="6" fill="#FF5E7E" stroke={OUTLINE} strokeWidth="1.5" />
+      <circle cx="58" cy="22" r="1.8" fill="#FFC9D6" />
+    </svg>
+  )
+}
+
 export function TreatSVG({ type = 'strawberry', ...props }) {
   switch (type) {
     case 'cakepop':
@@ -195,6 +285,10 @@ export function TreatSVG({ type = 'strawberry', ...props }) {
       return <CrispySVG {...props} />
     case 'pretzel':
       return <PretzelSVG {...props} />
+    case 'oreo':
+      return <OreoSVG {...props} />
+    case 'cupcake':
+      return <CupcakeSVG {...props} />
     default:
       return <StrawberrySVG {...props} />
   }

@@ -495,7 +495,7 @@ h1, h2, h3, h4 {
 /* ---------- treat cards ---------- */
 .treat-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
@@ -524,6 +524,8 @@ h1, h2, h3, h4 {
 .treat-card:nth-child(2) { background: linear-gradient(170deg, #fff 30%, var(--lavender) 160%); }
 .treat-card:nth-child(3) { background: linear-gradient(170deg, #fff 30%, var(--butter) 160%); }
 .treat-card:nth-child(4) { background: linear-gradient(170deg, #fff 30%, var(--mint) 160%); }
+.treat-card:nth-child(5) { background: linear-gradient(170deg, #fff 30%, var(--lavender) 160%); }
+.treat-card:nth-child(6) { background: linear-gradient(170deg, #fff 30%, var(--pink) 160%); }
 
 .treat-card:hover {
   border-color: rgba(255, 123, 172, 0.45);
@@ -1048,7 +1050,7 @@ h1, h2, h3, h4 {
 
 .bb-treat-tabs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   margin-bottom: 24px;
 }

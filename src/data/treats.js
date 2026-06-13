@@ -29,6 +29,7 @@ export const TREAT_TYPES = [
     emoji: '🍓',
     price: 3.5,
     blurb: 'Plump, juicy berries hand-dipped in silky chocolate. The signature.',
+    preview: { dip: 'milk', drizzle: 'white', topping: 'none' },
   },
   {
     id: 'cakepop',
@@ -37,6 +38,25 @@ export const TREAT_TYPES = [
     emoji: '🍭',
     price: 3.0,
     blurb: 'Moist cake rolled, dipped and dressed on a cute little stick.',
+    preview: { dip: 'ruby', drizzle: 'white', topping: 'sprinkles' },
+  },
+  {
+    id: 'cupcake',
+    name: 'Dipped Cupcake',
+    short: 'Cupcake',
+    emoji: '🧁',
+    price: 3.75,
+    blurb: 'Fluffy cupcakes crowned with a swirl of chocolate frosting & a cherry.',
+    preview: { dip: 'ruby', drizzle: 'dark', topping: 'sprinkles' },
+  },
+  {
+    id: 'oreo',
+    name: 'Chocolate Oreo',
+    short: 'Oreo',
+    emoji: '🍪',
+    price: 2.75,
+    blurb: 'Classic sandwich cookies dunked in chocolate and drizzled to match.',
+    preview: { dip: 'dark', drizzle: 'white', topping: 'none' },
   },
   {
     id: 'crispy',
@@ -45,6 +65,7 @@ export const TREAT_TYPES = [
     emoji: '🍫',
     price: 4.0,
     blurb: 'Gooey marshmallow crispy squares blanketed in chocolate.',
+    preview: { dip: 'dark', drizzle: 'white', topping: 'none' },
   },
   {
     id: 'pretzel',
@@ -53,6 +74,7 @@ export const TREAT_TYPES = [
     emoji: '🥨',
     price: 2.5,
     blurb: 'Salty-sweet twists drenched in chocolate with the perfect snap.',
+    preview: { dip: 'milk', drizzle: 'pink', topping: 'none' },
   },
 ]
 
