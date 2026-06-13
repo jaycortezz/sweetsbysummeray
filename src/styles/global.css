@@ -1179,6 +1179,65 @@ h1, h2, h3, h4 {
   flex-wrap: wrap;
 }
 
+/* --- finishing touches panel --- */
+.bb-finishing {
+  margin-top: 30px;
+}
+
+.bb-finishing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .bb-finishing-grid { grid-template-columns: 1fr; }
+}
+
+.bb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bb-field label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--choc-soft);
+}
+
+.bb-field select,
+.bb-field input {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 2px solid var(--cream-2);
+  background: var(--cream);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.bb-field select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23b08' d='M1 1l5 5 5-5' stroke='%23a06' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  padding-right: 40px;
+}
+
+.bb-field select:focus,
+.bb-field input:focus {
+  border-color: var(--pink-strong);
+}
+
 /* --- the box itself --- */
 .bb-box-outer {
   position: sticky;
@@ -1424,6 +1483,51 @@ h1, h2, h3, h4 {
   color: var(--pink-deep);
 }
 
+.bb-detail-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  background: var(--lavender);
+  border-radius: 16px;
+}
+
+.bb-detail-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 0.9rem;
+}
+
+.bb-detail-list li span {
+  color: var(--choc-soft);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.bb-detail-list li b {
+  color: var(--choc);
+  text-align: right;
+}
+
+.bb-cost-lines {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.bb-cost-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: var(--choc-soft);
+}
+
 .bb-total-row {
   display: flex;
   justify-content: space-between;
@@ -1433,6 +1537,7 @@ h1, h2, h3, h4 {
   color: var(--choc);
   border-top: 2px dashed rgba(74, 44, 42, 0.15);
   padding-top: 18px;
+  margin-top: 12px;
   margin-bottom: 28px;
 }
 

@@ -9,6 +9,22 @@ import {
 
 const CONFETTI_COLORS = ['#FF7BAC', '#A78BFA', '#5CC9A7', '#F5B94C', '#FFD3E3', '#7BD8FF']
 
+const DELIVERY_FEE = 6
+
+const OCCASIONS = [
+  'Birthday',
+  'Baby Shower',
+  'Gender Reveal',
+  'Wedding',
+  'Anniversary',
+  'Graduation',
+  "Valentine's Day",
+  'Mother’s Day',
+  'Thank You',
+  'Congratulations',
+  'Just Because',
+]
+
 let uid = 0
 const nextId = () => `treat-${++uid}-${Date.now()}`
 
@@ -97,6 +113,9 @@ export default function BuildABox() {
   const [topping, setTopping] = useState('none')
   const [flying, setFlying] = useState(null)
   const [surprising, setSurprising] = useState(false)
+  const [occasion, setOccasion] = useState('')
+  const [messageText, setMessageText] = useState('')
+  const [fulfillment, setFulfillment] = useState('pickup')
 
   const phaseRef = useRef(null)
   const previewRef = useRef(null)
@@ -105,7 +124,8 @@ export default function BuildABox() {
 
   const full = box && items.length >= box.slots
   const itemsTotal = items.reduce((s, it) => s + it.price, 0)
-  const total = (box ? box.base : 0) + itemsTotal
+  const deliveryFee = fulfillment === 'delivery' ? DELIVERY_FEE : 0
+  const total = (box ? box.base : 0) + itemsTotal + deliveryFee
 
   /* phase entrance animation */
   useEffect(() => {
@@ -238,13 +258,22 @@ export default function BuildABox() {
 
   const t = findTreat(treat)
 
+  const fulfillmentLabel =
+    fulfillment === 'delivery' ? `Delivery (+$${DELIVERY_FEE.toFixed(2)})` : 'Pickup (Free)'
+
   const mailtoHref = () => {
     const lines = items.map(
       (it, i) =>
         `${i + 1}. ${findTreat(it.treat).name} — ${findDip(it.dip).label}, ${findDrizzle(it.drizzle).label}, ${findTopping(it.topping).label} ($${it.price.toFixed(2)})`
     )
     const body = encodeURIComponent(
-      `Hi Summeray!\n\nI'd love to order ${box ? `"${box.name}"` : 'a box'} (${items.length} treats):\n\n${lines.join('\n')}\n\nBox total: $${total.toFixed(2)}\n\nName:\nPickup / delivery date:\nNotes:\n`
+      `Hi Summeray!\n\nI'd love to order ${box ? `"${box.name}"` : 'a box'} (${items.length} treats):\n\n` +
+        `${lines.join('\n')}\n\n` +
+        `Theme / Occasion: ${occasion || 'Not specified'}\n` +
+        `Message / Text: ${messageText || 'None'}\n` +
+        `Fulfillment: ${fulfillmentLabel}\n\n` +
+        `Box total: $${total.toFixed(2)}\n\n` +
+        `Name:\nPreferred date:\n${fulfillment === 'delivery' ? 'Delivery address:\n' : ''}Notes:\n`
     )
     return `mailto:hello@sweetsbysummeray.com?subject=${encodeURIComponent('Sweet Box Order 🍓')}&body=${body}`
   }
@@ -456,6 +485,54 @@ export default function BuildABox() {
                 </div>
               </div>
             </div>
+
+            {/* finishing touches: theme, message, fulfillment */}
+            <div className="bb-panel bb-finishing">
+              <h2 className="bb-panel-title">Finishing touches 🎀</h2>
+              <p className="bb-panel-sub">
+                Set the vibe, add your message, and choose how you'd like to get your box.
+              </p>
+              <div className="bb-finishing-grid">
+                <div className="bb-field">
+                  <label htmlFor="bb-occasion">Theme / Occasion</label>
+                  <select
+                    id="bb-occasion"
+                    value={occasion}
+                    onChange={(e) => setOccasion(e.target.value)}
+                    data-cursor
+                  >
+                    <option value="">Choose an occasion…</option>
+                    {OCCASIONS.map((o) => (
+                      <option key={o} value={o}>{o}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="bb-field">
+                  <label htmlFor="bb-message">Message / Text</label>
+                  <input
+                    id="bb-message"
+                    type="text"
+                    maxLength={60}
+                    placeholder="e.g. Happy Birthday Mia!"
+                    value={messageText}
+                    onChange={(e) => setMessageText(e.target.value)}
+                    data-cursor
+                  />
+                </div>
+                <div className="bb-field">
+                  <label htmlFor="bb-fulfillment">Pickup or Delivery</label>
+                  <select
+                    id="bb-fulfillment"
+                    value={fulfillment}
+                    onChange={(e) => setFulfillment(e.target.value)}
+                    data-cursor
+                  >
+                    <option value="pickup">Pickup — Free</option>
+                    <option value="delivery">Delivery — +${DELIVERY_FEE.toFixed(2)}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -489,8 +566,25 @@ export default function BuildABox() {
                   </li>
                 ))}
               </ul>
+              <ul className="bb-detail-list">
+                <li><span>Theme / Occasion</span><b>{occasion || 'Not specified'}</b></li>
+                <li><span>Message / Text</span><b>{messageText || '—'}</b></li>
+                <li><span>Fulfillment</span><b>{fulfillmentLabel}</b></li>
+              </ul>
+              <div className="bb-cost-lines">
+                <div className="bb-cost-line">
+                  <span>Treats &amp; box</span>
+                  <span>${(box.base + itemsTotal).toFixed(2)}</span>
+                </div>
+                {deliveryFee > 0 && (
+                  <div className="bb-cost-line">
+                    <span>Delivery fee</span>
+                    <span>${deliveryFee.toFixed(2)}</span>
+                  </div>
+                )}
+              </div>
               <div className="bb-total-row">
-                <span>Box total <small style={{ fontSize: '0.6em', color: 'var(--choc-soft)' }}>(incl. ${box.base.toFixed(2)} box)</small></span>
+                <span>Box total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
               <div className="bb-summary-actions">

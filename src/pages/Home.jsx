@@ -333,10 +333,11 @@ export default function Home({ ready }) {
             <div className="step-card">
               <span className="step-emoji" aria-hidden="true">🎀</span>
               <div className="step-num">03</div>
-              <h3>Unbox the joy</h3>
+              <h3>Pickup or delivery</h3>
               <p>
-                Your box arrives ribbon-wrapped and ready to gift — or ready to
-                devour straight from the lid. We don't judge.
+                Your box arrives ribbon-wrapped and ready to gift. Choose free
+                local pickup or add delivery right to your door for a flat $6 —
+                either way it's ready to devour straight from the lid.
               </p>
             </div>
           </div>
