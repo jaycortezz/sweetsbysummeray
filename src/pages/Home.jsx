@@ -18,34 +18,6 @@ const HERO_FLOATS = [
   { type: 'crispy', dip: 'milk', drizzle: 'white', style: { top: '52%', left: '2%', width: 80 }, depth: 16 },
 ]
 
-function TestimonialCards() {
-  const quotes = [
-    {
-      q: 'The strawberry box was almost too pretty to eat. Almost. My whole baby shower was talking about it!',
-      by: '— Maya R.',
-    },
-    {
-      q: 'Ordered the Deluxe for an anniversary. Every single treat was perfect — the drizzle, the crunch, all of it.',
-      by: '— Devon & Alex',
-    },
-    {
-      q: 'The build-a-box made gifting so fun. My mom cried when she opened hers. 10/10 will be back.',
-      by: '— Tasha L.',
-    },
-  ]
-  return (
-    <div className="testi-row" data-reveal>
-      {quotes.map((t, i) => (
-        <figure className="testi-card" key={i}>
-          <div className="quote-mark" aria-hidden="true">“</div>
-          <blockquote>{t.q}</blockquote>
-          <cite>{t.by}</cite>
-        </figure>
-      ))}
-    </div>
-  )
-}
-
 function DipLab() {
   const [dip, setDip] = useState('milk')
   const berryRef = useRef(null)
@@ -344,14 +316,22 @@ export default function Home({ ready }) {
         </div>
       </section>
 
-      {/* ---------- TESTIMONIALS ---------- */}
+      {/* ---------- TESTIMONIALS (coming soon) ---------- */}
       <section className="section" id="love" style={{ background: 'var(--cream-2)' }}>
         <div className="wrap">
           <div className="section-head" data-reveal>
-            <span className="section-kicker">Sweet words</span>
-            <h2 className="section-title">People are <em>melting.</em></h2>
+            <span className="section-kicker">Coming soon</span>
+            <h2 className="section-title">Sweet words, <em>on the way.</em></h2>
+            <p className="section-sub">
+              We're collecting reviews from our very first sweet-tooths. Order a
+              box and you might just see your kind words featured right here.
+            </p>
           </div>
-          <TestimonialCards />
+          <div className="coming-soon-card" data-reveal>
+            <span className="coming-soon-pill">Coming soon ✨</span>
+            <div className="coming-soon-emoji" aria-hidden="true">🍓💕</div>
+            <p>Fresh reviews are dipping &amp; drying — stay tuned!</p>
+          </div>
         </div>
       </section>
 
