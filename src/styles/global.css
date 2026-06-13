@@ -1592,6 +1592,10 @@ h1, h2, h3, h4 {
   grid-column: 1 / -1;
 }
 
+.bb-form .bb-field-full {
+  grid-column: 1 / -1;
+}
+
 @media (max-width: 520px) {
   .bb-form { grid-template-columns: 1fr; }
 }

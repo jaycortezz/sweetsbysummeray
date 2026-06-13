@@ -38,8 +38,7 @@ export default function Footer() {
             <h4>Say hi</h4>
             <ul className="footer-links">
               <li><a href="mailto:hello@sweetsbysummeray.com">hello@sweetsbysummeray.com</a></li>
-              <li><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-              <li><a href="https://tiktok.com" target="_blank" rel="noreferrer">TikTok</a></li>
+              <li><a href="https://www.instagram.com/sweetsbysummeray/" target="_blank" rel="noreferrer">Instagram</a></li>
             </ul>
           </div>
         </div>
