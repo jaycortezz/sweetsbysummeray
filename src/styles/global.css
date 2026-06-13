@@ -1559,24 +1559,41 @@ h1, h2, h3, h4 {
   margin-bottom: 28px;
 }
 
+.bb-form-heading {
+  font-size: 1.15rem;
+  color: var(--choc);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
 .bb-form {
   display: grid;
-  gap: 14px;
-  margin-bottom: 22px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
 }
 
 .bb-form input,
 .bb-form textarea {
   font-family: var(--font-body);
   font-size: 0.95rem;
-  padding: 14px 18px;
-  border-radius: 16px;
+  padding: 13px 16px;
+  border-radius: 14px;
   border: 2px solid var(--cream-2);
   background: var(--cream);
   color: var(--ink);
   outline: none;
   transition: border-color 0.2s ease;
   resize: vertical;
+  width: 100%;
+}
+
+.bb-form textarea {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 520px) {
+  .bb-form { grid-template-columns: 1fr; }
 }
 
 .bb-form input:focus,
@@ -1584,11 +1601,56 @@ h1, h2, h3, h4 {
   border-color: var(--pink-strong);
 }
 
+.bb-form-error {
+  color: var(--pink-deep);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
 .bb-summary-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.bb-form-fallback {
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--choc-soft);
+  margin-top: 16px;
+}
+
+.bb-form-fallback a {
+  color: var(--pink-deep);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.bb-sent {
+  text-align: center;
+  padding: 14px 6px 4px;
+}
+
+.bb-sent-emoji {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.bb-sent h3 {
+  font-size: 1.7rem;
+  color: var(--choc);
+  margin-bottom: 10px;
+}
+
+.bb-sent p {
+  color: var(--choc-soft);
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto 22px;
+  font-size: 0.95rem;
 }
 
 /* confetti bits */

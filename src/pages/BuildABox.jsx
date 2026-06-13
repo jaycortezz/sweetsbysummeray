@@ -11,6 +11,14 @@ const CONFETTI_COLORS = ['#FF7BAC', '#A78BFA', '#5CC9A7', '#F5B94C', '#FFD3E3', 
 
 const DELIVERY_FEE = 10
 
+// Order capture via Web3Forms (https://web3forms.com) — a static-site-friendly
+// form backend. The access key is public/safe to ship in client code; orders are
+// emailed to the address that owns the key and stored in the Web3Forms dashboard.
+// Create a free key with Summeray's email and paste it below to go live.
+// Until a real key is set, the order button falls back to opening an email draft.
+const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+const ORDER_EMAIL = 'hello@sweetsbysummeray.com'
+
 const OCCASIONS = [
   'Birthday',
   'Baby Shower',
@@ -117,6 +125,9 @@ export default function BuildABox() {
   const [occasion, setOccasion] = useState('')
   const [messageText, setMessageText] = useState('')
   const [fulfillment, setFulfillment] = useState('pickup')
+  const [contact, setContact] = useState({ name: '', email: '', phone: '', date: '', notes: '' })
+  const [submitState, setSubmitState] = useState('idle') // idle | sending | sent | error
+  const [submitError, setSubmitError] = useState('')
 
   const phaseRef = useRef(null)
   const previewRef = useRef(null)
@@ -267,22 +278,85 @@ export default function BuildABox() {
   const fulfillmentLabel =
     fulfillment === 'delivery' ? `Delivery (+$${DELIVERY_FEE.toFixed(2)})` : 'Pickup (Free)'
 
-  const mailtoHref = () => {
+  const orderText = () => {
     const lines = items.map(
       (it, i) =>
         `${i + 1}. ${findTreat(it.treat).name} — ${dipLabelOf(it.dip, it.customDip)}, ${findDrizzle(it.drizzle).label}, ${findTopping(it.topping).label} ($${it.price.toFixed(2)})`
     )
-    const body = encodeURIComponent(
-      `Hi Summeray!\n\nI'd love to order ${box ? `"${box.name}"` : 'a box'} (${items.length} treats):\n\n` +
-        `${lines.join('\n')}\n\n` +
-        `Theme / Occasion: ${occasion || 'Not specified'}\n` +
-        `Message / Text: ${messageText || 'None'}\n` +
-        `Fulfillment: ${fulfillmentLabel}\n\n` +
-        `Box total: $${total.toFixed(2)}\n\n` +
-        `Name:\nPreferred date:\n${fulfillment === 'delivery' ? 'Delivery address:\n' : ''}Notes:\n`
+    return (
+      `${box ? `"${box.name}"` : 'Box'} — ${items.length} treats\n\n` +
+      `${lines.join('\n')}\n\n` +
+      `Theme / Occasion: ${occasion || 'Not specified'}\n` +
+      `Message / Text: ${messageText || 'None'}\n` +
+      `Fulfillment: ${fulfillmentLabel}\n` +
+      `Treats & box: $${(box.base + itemsTotal).toFixed(2)}\n` +
+      (deliveryFee ? `Delivery fee: $${deliveryFee.toFixed(2)}\n` : '') +
+      `Box total: $${total.toFixed(2)}\n\n` +
+      `— Customer —\n` +
+      `Name: ${contact.name || '(not provided)'}\n` +
+      `Email: ${contact.email || '(not provided)'}\n` +
+      `Phone: ${contact.phone || '(not provided)'}\n` +
+      `Preferred date: ${contact.date || '(not provided)'}\n` +
+      `Notes: ${contact.notes || 'None'}\n`
     )
-    return `mailto:hello@sweetsbysummeray.com?subject=${encodeURIComponent('Sweet Box Order 🍓')}&body=${body}`
   }
+
+  const mailtoHref = () => {
+    const body = encodeURIComponent(`Hi Summeray!\n\nI'd love to order:\n\n${orderText()}`)
+    return `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent('Sweet Box Order 🍓')}&body=${body}`
+  }
+
+  const hasFormBackend = WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== 'YOUR_WEB3FORMS_ACCESS_KEY'
+
+  const submitOrder = async () => {
+    if (!contact.name.trim() || !contact.email.trim()) {
+      setSubmitState('error')
+      setSubmitError('Please add your name and email so Summeray can reach you.')
+      return
+    }
+    // No form backend configured yet — fall back to an email draft.
+    if (!hasFormBackend) {
+      window.location.href = mailtoHref()
+      return
+    }
+    setSubmitState('sending')
+    setSubmitError('')
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `🍓 New box order — ${box?.name} (${contact.name || 'no name'})`,
+          from_name: contact.name || 'Sweets by Summeray site',
+          replyto: contact.email,
+          box: box?.name,
+          treats: items.length,
+          occasion: occasion || 'Not specified',
+          message_text: messageText || 'None',
+          fulfillment: fulfillmentLabel,
+          total: `$${total.toFixed(2)}`,
+          customer_name: contact.name,
+          customer_email: contact.email,
+          customer_phone: contact.phone,
+          preferred_date: contact.date,
+          notes: contact.notes,
+          message: orderText(),
+        }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setSubmitState('sent')
+      } else {
+        throw new Error(data.message || 'Submission failed')
+      }
+    } catch (err) {
+      setSubmitState('error')
+      setSubmitError("Something went wrong sending your order. Please try the email option below.")
+    }
+  }
+
+  const updateContact = (key) => (e) => setContact((c) => ({ ...c, [key]: e.target.value }))
 
   return (
     <div className="bb-page">
@@ -611,23 +685,65 @@ export default function BuildABox() {
                 <span>Box total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <div className="bb-summary-actions">
-                <MagneticButton>
-                  <a className="btn btn-primary" href={mailtoHref()} data-cursor>
-                    Send my order 💌
-                  </a>
-                </MagneticButton>
-                <button className="btn btn-ghost" onClick={() => setPhase('build')} data-cursor>
-                  ← Keep editing
-                </button>
-                <button
-                  className="btn btn-ghost"
-                  onClick={() => { setItems([]); setBox(null); setPhase('size') }}
-                  data-cursor
-                >
-                  Start over
-                </button>
-              </div>
+              {submitState === 'sent' ? (
+                <div className="bb-sent">
+                  <div className="bb-sent-emoji" aria-hidden="true">🎉</div>
+                  <h3>Order sent!</h3>
+                  <p>
+                    Thank you, {contact.name.split(' ')[0] || 'friend'}! Summeray has
+                    your order and will reach out to <b>{contact.email}</b> to confirm
+                    details and payment.
+                  </p>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setItems([]); setBox(null); setOccasion(''); setMessageText('')
+                      setFulfillment('pickup'); setContact({ name: '', email: '', phone: '', date: '', notes: '' })
+                      setSubmitState('idle'); setPhase('size')
+                    }}
+                    data-cursor
+                  >
+                    Build another box 🍓
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h3 className="bb-form-heading">Where should we send your confirmation?</h3>
+                  <div className="bb-form">
+                    <input type="text" placeholder="Your name *" value={contact.name} onChange={updateContact('name')} data-cursor />
+                    <input type="email" placeholder="Email *" value={contact.email} onChange={updateContact('email')} data-cursor />
+                    <input type="tel" placeholder="Phone (optional)" value={contact.phone} onChange={updateContact('phone')} data-cursor />
+                    <input type="date" aria-label="Preferred date" value={contact.date} onChange={updateContact('date')} data-cursor />
+                    <textarea rows={2} placeholder={fulfillment === 'delivery' ? 'Delivery address & any notes' : 'Pickup notes (optional)'} value={contact.notes} onChange={updateContact('notes')} data-cursor />
+                  </div>
+                  {submitState === 'error' && <p className="bb-form-error">{submitError}</p>}
+                  <div className="bb-summary-actions">
+                    <MagneticButton>
+                      <button
+                        className="btn btn-primary"
+                        onClick={submitOrder}
+                        disabled={submitState === 'sending'}
+                        data-cursor
+                      >
+                        {submitState === 'sending' ? 'Sending…' : 'Send my order 💌'}
+                      </button>
+                    </MagneticButton>
+                    <button className="btn btn-ghost" onClick={() => setPhase('build')} data-cursor>
+                      ← Keep editing
+                    </button>
+                    <button
+                      className="btn btn-ghost"
+                      onClick={() => { setItems([]); setBox(null); setPhase('size') }}
+                      data-cursor
+                    >
+                      Start over
+                    </button>
+                  </div>
+                  <p className="bb-form-fallback">
+                    Prefer email? <a href={mailtoHref()} data-cursor>Open an order draft instead →</a>
+                  </p>
+                </>
+              )}
             </div>
           </div>
         )}
