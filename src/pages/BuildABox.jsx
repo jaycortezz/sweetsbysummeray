@@ -16,7 +16,7 @@ const DELIVERY_FEE = 10
 // emailed to the address that owns the key and stored in the Web3Forms dashboard.
 // Create a free key with Summeray's email and paste it below to go live.
 // Until a real key is set, the order button falls back to opening an email draft.
-const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+const WEB3FORMS_ACCESS_KEY = 'a256eb42-9b2f-42fd-8854-5ad7f385b99c'
 const ORDER_EMAIL = 'hello@sweetsbysummeray.com'
 
 const OCCASIONS = [
