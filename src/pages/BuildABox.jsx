@@ -119,7 +119,9 @@ export default function BuildABox() {
   const [dip, setDip] = useState('milk')
   const [customDip, setCustomDip] = useState('')
   const [drizzle, setDrizzle] = useState('none')
+  const [customDrizzle, setCustomDrizzle] = useState('')
   const [topping, setTopping] = useState('none')
+  const [customTopping, setCustomTopping] = useState('')
   const [flying, setFlying] = useState(null)
   const [surprising, setSurprising] = useState(false)
   const [occasion, setOccasion] = useState('')
@@ -199,13 +201,17 @@ export default function BuildABox() {
     if (!box || full || flying) return
     const t = findTreat(custom?.treat ?? treat)
     const resolvedDip = custom?.dip ?? dip
+    const resolvedDrizzle = custom?.drizzle ?? drizzle
+    const resolvedTopping = custom?.topping ?? topping
     const item = {
       id: nextId(),
       treat: t.id,
       dip: resolvedDip,
       customDip: resolvedDip === 'custom' ? (customDip.trim() || 'Custom dip') : undefined,
-      drizzle: custom?.drizzle ?? drizzle,
-      topping: custom?.topping ?? topping,
+      drizzle: resolvedDrizzle,
+      customDrizzle: resolvedDrizzle === 'custom' ? (customDrizzle.trim() || 'Custom drizzle') : undefined,
+      topping: resolvedTopping,
+      customTopping: resolvedTopping === 'custom' ? (customTopping.trim() || 'Custom topping') : undefined,
       price: t.price,
     }
     const slotIndex = items.length
@@ -275,13 +281,19 @@ export default function BuildABox() {
   const dipLabelOf = (dipId, customLabel) =>
     dipId === 'custom' ? (customLabel?.trim() || 'Custom dip') : findDip(dipId).label
 
+  const drizzleLabelOf = (drizzleId, customLabel) =>
+    drizzleId === 'custom' ? (customLabel?.trim() || 'Custom drizzle') : findDrizzle(drizzleId).label
+
+  const toppingLabelOf = (toppingId, customLabel) =>
+    toppingId === 'custom' ? (customLabel?.trim() || 'Custom topping') : findTopping(toppingId).label
+
   const fulfillmentLabel =
     fulfillment === 'delivery' ? `Delivery (+$${DELIVERY_FEE.toFixed(2)})` : 'Pickup (Free)'
 
   const orderText = () => {
     const lines = items.map(
       (it, i) =>
-        `${i + 1}. ${findTreat(it.treat).name} — ${dipLabelOf(it.dip, it.customDip)}, ${findDrizzle(it.drizzle).label}, ${findTopping(it.topping).label} ($${it.price.toFixed(2)})`
+        `${i + 1}. ${findTreat(it.treat).name} — ${dipLabelOf(it.dip, it.customDip)}, ${drizzleLabelOf(it.drizzle, it.customDrizzle)}, ${toppingLabelOf(it.topping, it.customTopping)} ($${it.price.toFixed(2)})`
     )
     return (
       `${box ? `"${box.name}"` : 'Box'} — ${items.length} treats\n\n` +
@@ -486,7 +498,25 @@ export default function BuildABox() {
                         {d.label}
                       </button>
                     ))}
+                    <button
+                      className={`bb-chip${drizzle === 'custom' ? ' active' : ''}`}
+                      onClick={() => setDrizzle('custom')}
+                      data-cursor
+                    >
+                      <span className="swatch multi" /> ✏️ Type your own
+                    </button>
                   </div>
+                  {drizzle === 'custom' && (
+                    <input
+                      className="bb-custom-dip"
+                      type="text"
+                      maxLength={40}
+                      placeholder="Describe your drizzle — e.g. gold, two-tone pink & white"
+                      value={customDrizzle}
+                      onChange={(e) => setCustomDrizzle(e.target.value)}
+                      data-cursor
+                    />
+                  )}
                 </div>
 
                 <div className="bb-option-group">
@@ -506,7 +536,25 @@ export default function BuildABox() {
                         {tp.label}
                       </button>
                     ))}
+                    <button
+                      className={`bb-chip${topping === 'custom' ? ' active' : ''}`}
+                      onClick={() => setTopping('custom')}
+                      data-cursor
+                    >
+                      <span className="swatch multi" /> ✏️ Type your own
+                    </button>
                   </div>
+                  {topping === 'custom' && (
+                    <input
+                      className="bb-custom-dip"
+                      type="text"
+                      maxLength={40}
+                      placeholder="Describe your topping — e.g. crushed pretzel, edible glitter"
+                      value={customTopping}
+                      onChange={(e) => setCustomTopping(e.target.value)}
+                      data-cursor
+                    />
+                  )}
                 </div>
 
                 <div className="bb-preview-row">
@@ -516,7 +564,7 @@ export default function BuildABox() {
                   <div className="bb-preview-meta">
                     <div className="name">{t.name}</div>
                     <div className="desc">
-                      {dipLabelOf(dip, customDip)} · {findDrizzle(drizzle).label} · {findTopping(topping).label}
+                      {dipLabelOf(dip, customDip)} · {drizzleLabelOf(drizzle, customDrizzle)} · {toppingLabelOf(topping, customTopping)}
                     </div>
                     <div className="price">${t.price.toFixed(2)}</div>
                   </div>
@@ -657,7 +705,7 @@ export default function BuildABox() {
                     <div className="meta">
                       <b>{findTreat(it.treat).name}</b>
                       <span>
-                        {dipLabelOf(it.dip, it.customDip)} · {findDrizzle(it.drizzle).label} · {findTopping(it.topping).label}
+                        {dipLabelOf(it.dip, it.customDip)} · {drizzleLabelOf(it.drizzle, it.customDrizzle)} · {toppingLabelOf(it.topping, it.customTopping)}
                       </span>
                     </div>
                     <span className="p">${it.price.toFixed(2)}</span>
