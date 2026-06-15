@@ -744,12 +744,25 @@ export default function BuildABox() {
                   </p>
                   <div className="bb-pay-note">
                     <span className="bb-pay-emoji" aria-hidden="true">💛</span>
-                    <p>
-                      <b>One last sweet step:</b> your spot is reserved, and your order
-                      is officially confirmed the moment your Venmo payment of{' '}
-                      <b>${total.toFixed(2)}</b> comes through. Summeray will share her
-                      Venmo when she reaches out — send it over and your treats are locked in!
-                    </p>
+                    <div className="bb-pay-body">
+                      <p>
+                        <b>One last sweet step:</b> your spot is reserved, and your order
+                        is officially confirmed the moment your payment of{' '}
+                        <b>${total.toFixed(2)}</b> comes through. Send it to either:
+                      </p>
+                      <div className="bb-pay-tags">
+                        <a className="bb-pay-tag" href="https://venmo.com/u/summeray13" target="_blank" rel="noreferrer" data-cursor>
+                          <span>Venmo</span> @summeray13
+                        </a>
+                        <a className="bb-pay-tag" href="https://cash.app/$summeray13" target="_blank" rel="noreferrer" data-cursor>
+                          <span>Cash App</span> $summeray13
+                        </a>
+                      </div>
+                      <p className="bb-pay-memo">
+                        💌 Please pop <b>your name in the memo</b> on Venmo or Cash App so
+                        Summeray can match your payment to your order!
+                      </p>
+                    </div>
                   </div>
                   <button
                     className="btn btn-primary"
