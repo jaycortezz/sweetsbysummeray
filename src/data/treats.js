@@ -1,24 +1,21 @@
 export const DIPS = [
   { id: 'milk', label: 'Milk Chocolate', color: '#8B5A3C', shine: '#A9714F' },
-  { id: 'dark', label: 'Dark Chocolate', color: '#4A2C2A', shine: '#6B4540' },
   { id: 'white', label: 'White Chocolate', color: '#F6EAD7', shine: '#FFF8EC' },
-  { id: 'ruby', label: 'Pink Ruby', color: '#F4A7BB', shine: '#FBC4D2' },
+  { id: 'dark', label: 'Dark Chocolate', color: '#4A2C2A', shine: '#6B4540' },
 ]
 
 export const DRIZZLES = [
   { id: 'none', label: 'No Drizzle', color: null },
   { id: 'white', label: 'White Drizzle', color: '#FFF6EC' },
+  { id: 'dark', label: 'Chocolate Drizzle', color: '#4A2C2A' },
   { id: 'pink', label: 'Pink Drizzle', color: '#FF9EC0' },
-  { id: 'caramel', label: 'Caramel Drizzle', color: '#D99A4E' },
-  { id: 'dark', label: 'Dark Drizzle', color: '#4A2C2A' },
 ]
 
 export const TOPPINGS = [
   { id: 'none', label: 'Keep it Classic', colors: [] },
-  { id: 'sprinkles', label: 'Rainbow Sprinkles', colors: ['#FF7BAC', '#7BD8FF', '#FFD37B', '#9BE89B', '#C89BFF'] },
-  { id: 'oreo', label: 'Crushed Oreo', colors: ['#2E2520', '#443830', '#1F1813'] },
-  { id: 'coconut', label: 'Coconut Snow', colors: ['#FFFDF8', '#FFF3E2', '#FAEFDF'] },
   { id: 'gold', label: 'Gold Dust', colors: ['#F5C84C', '#FFE08A', '#E8B62E'] },
+  { id: 'silver', label: 'Silver Dust', colors: ['#CBD2D8', '#EEF1F4', '#AEB6BD'] },
+  { id: 'oreo', label: 'Crushed Oreos', colors: ['#2E2520', '#443830', '#1F1813'] },
 ]
 
 export const TREAT_TYPES = [
@@ -38,7 +35,7 @@ export const TREAT_TYPES = [
     emoji: '🍭',
     price: 4.0,
     blurb: 'Moist cake rolled, dipped and dressed on a cute little stick.',
-    preview: { dip: 'ruby', drizzle: 'white', topping: 'sprinkles' },
+    preview: { dip: 'white', drizzle: 'pink', topping: 'gold' },
   },
   {
     id: 'cupcake',
@@ -47,7 +44,7 @@ export const TREAT_TYPES = [
     emoji: '🧁',
     price: 2.5,
     blurb: 'Fluffy cupcakes crowned with a swirl of chocolate frosting & a cherry.',
-    preview: { dip: 'ruby', drizzle: 'dark', topping: 'sprinkles' },
+    preview: { dip: 'milk', drizzle: 'white', topping: 'silver' },
   },
   {
     id: 'oreo',

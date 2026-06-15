@@ -530,8 +530,8 @@ export default function BuildABox() {
                         data-cursor
                       >
                         <span
-                          className={`swatch${tp.id === 'sprinkles' ? ' multi' : ''}`}
-                          style={tp.id !== 'sprinkles' ? { background: tp.colors[0] || 'transparent', borderStyle: tp.colors.length ? 'solid' : 'dashed' } : undefined}
+                          className="swatch"
+                          style={{ background: tp.colors[0] || 'transparent', borderStyle: tp.colors.length ? 'solid' : 'dashed' }}
                         />
                         {tp.label}
                       </button>

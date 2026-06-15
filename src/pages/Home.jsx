@@ -12,7 +12,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const HERO_FLOATS = [
   { type: 'strawberry', dip: 'milk', drizzle: 'white', style: { top: '16%', left: '6%', width: 110 }, depth: 26 },
-  { type: 'cakepop', dip: 'ruby', drizzle: 'white', topping: 'sprinkles', style: { top: '22%', right: '7%', width: 100 }, depth: -32 },
+  { type: 'cakepop', dip: 'white', drizzle: 'pink', topping: 'gold', style: { top: '22%', right: '7%', width: 100 }, depth: -32 },
   { type: 'pretzel', dip: 'dark', drizzle: 'pink', style: { bottom: '20%', left: '10%', width: 95 }, depth: -20 },
   { type: 'strawberry', dip: 'white', drizzle: 'pink', topping: 'gold', style: { bottom: '14%', right: '11%', width: 120 }, depth: 34 },
   { type: 'crispy', dip: 'milk', drizzle: 'white', style: { top: '52%', left: '2%', width: 80 }, depth: 16 },
@@ -45,7 +45,7 @@ function DipLab() {
               <h2>Go on, <em style={{ fontStyle: 'italic', fontWeight: 400, color: 'var(--pink-deep)' }}>dunk it.</em></h2>
               <p>
                 Every berry gets the royal treatment — hand-dipped in your choice of
-                milk, dark, white or pink ruby chocolate. Tap the berry (or pick a
+                milk, white or dark chocolate. Tap the berry (or pick a
                 chocolate) to see it take a dive.
               </p>
               <MagneticButton>
