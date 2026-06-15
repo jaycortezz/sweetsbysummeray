@@ -740,8 +740,17 @@ export default function BuildABox() {
                   <p>
                     Thank you, {contact.name.split(' ')[0] || 'friend'}! Summeray has
                     your order and will reach out to <b>{contact.email}</b> to confirm
-                    details and payment.
+                    the details.
                   </p>
+                  <div className="bb-pay-note">
+                    <span className="bb-pay-emoji" aria-hidden="true">💛</span>
+                    <p>
+                      <b>One last sweet step:</b> your spot is reserved, and your order
+                      is officially confirmed the moment your Venmo payment of{' '}
+                      <b>${total.toFixed(2)}</b> comes through. Summeray will share her
+                      Venmo when she reaches out — send it over and your treats are locked in!
+                    </p>
+                  </div>
                   <button
                     className="btn btn-primary"
                     onClick={() => {
