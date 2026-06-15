@@ -74,7 +74,7 @@ export function StrawberrySVG({ dip = 'milk', drizzle = 'none', topping = 'none'
   )
 }
 
-export function CakePopSVG({ dip = 'ruby', drizzle = 'none', topping = 'none', ...props }) {
+export function CakePopSVG({ dip = 'white', drizzle = 'none', topping = 'none', ...props }) {
   const id = useId()
   const d = findDip(dip)
   const dz = findDrizzle(drizzle)
@@ -221,7 +221,7 @@ export function OreoSVG({ dip = 'milk', drizzle = 'white', topping = 'none', ...
   )
 }
 
-export function CupcakeSVG({ dip = 'ruby', drizzle = 'none', topping = 'none', ...props }) {
+export function CupcakeSVG({ dip = 'milk', drizzle = 'none', topping = 'none', ...props }) {
   const id = useId()
   const d = findDip(dip)
   const dz = findDrizzle(drizzle)
